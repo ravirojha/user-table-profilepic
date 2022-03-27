@@ -1,5 +1,5 @@
 import './App.css';
-import { ChakraProvider, useToast } from '@chakra-ui/react'
+import { ChakraProvider, useToast, Spinner } from '@chakra-ui/react'
 import React, {useEffect, useState} from "react";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {useCookies} from 'react-cookie';
@@ -14,10 +14,12 @@ export const AuthContext = React.createContext();
 function App() {
     const toast = useToast();
     const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [cookie, setCookie] = useCookies(['user']);
 
     useEffect(() => {
+        setIsLoading(true);
         if(!user) {
             if(cookie.user) {
                 setUser(cookie.user);
@@ -27,6 +29,7 @@ function App() {
             .then(res => {
                 setCookie('user', res.data);
                 setUser(res.data);
+                setIsLoading(false);
             })
             .catch((error) => toast({
                 title: 'Some Error Occured',
@@ -42,15 +45,15 @@ function App() {
   return (
     <ChakraProvider>
         <AuthContext.Provider value={{user}}>
-            <div className='App'>
+            {isLoading ? <Spinner ml={'50%'} mt={'50vh'}/> : (<div className='App'>
                 <Router>
-                <Routes>
-                    {user && <Route path={'/'} element={<Users />} />}
-                    <Route path={'/not-found'} element={<NotFound />}/>
-                    <Route path={'*'} element={<NotFound />}/>
-                </Routes>
+                    <Routes>
+                        {user && <Route path={'/'} element={<Users/>}/>}
+                        <Route path={'/not-found'} element={<NotFound/>}/>
+                        <Route path={'*'} element={<NotFound/>}/>
+                    </Routes>
                 </Router>
-            </div>
+            </div>)}
         </AuthContext.Provider>
     </ChakraProvider>
   );

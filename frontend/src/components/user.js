@@ -188,14 +188,14 @@ function User({userItem, change, isNew}) {
                         />
                     </Tooltip>
                     <Tooltip
-                        label='Edit'
+                        label='Delete'
                         hasArrow
                         placement='top'
                         arrowSize={10}
                         fontSize='12px'>
                         <IconButton
                             onClick={() => onDelete(userItemData.id)}
-                            aria-label='Edit'
+                            aria-label='Delete'
                             size='sm'
                             isRound
                             mr={5}

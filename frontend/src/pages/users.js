@@ -59,7 +59,7 @@ function Users(props) {
     }
 
     return (
-        isLoading ? <Spinner/> :
+        isLoading ? <Spinner mt={'50vh'}/> :
         <Flex flexDirection={'column'} gap={3} align={'center'}>
             <Box p={5}>
             <AddButton change={change} isNew={isNew}/>
